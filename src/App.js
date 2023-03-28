@@ -19,6 +19,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import GenerateThanks from "./pages/GenerateThanks";
 import Footer from "./pages/Footer";
 import Dashboard from "./pages/Dashboard";
+import OrnamentForm from "./pages/OrnamentForm";
 const drawerWidth = 280;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -97,6 +98,14 @@ function App() {
                   element={
                     <RequireAuth>
                       <ReceiptManagement />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/ornament-donation"
+                  element={
+                    <RequireAuth>
+                      <OrnamentForm />
                     </RequireAuth>
                   }
                 />
