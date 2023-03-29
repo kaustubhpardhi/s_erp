@@ -42,6 +42,8 @@ const OrnamentForm = () => {
   const [gotra, setGotra] = useState("");
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(true);
+  const [uid, setUid] = useState("");
+  const [email, setEmail] = useState("");
   const { t } = useTranslation();
 
   //checking the last pawti number
@@ -81,8 +83,94 @@ const OrnamentForm = () => {
       })
       .catch((error) => setCityList([]));
   }, [state]);
+  //lists
+  const gotraList = [
+    "काश्यप",
+    "वशिष्ठ",
+    "अंगीरस",
+    "अत्री",
+    "मार्कंडेय ",
+    "भारद्वाज",
+    "सांख्यन",
+    "नित्युंदन",
+    "कौडिण्य",
+    "जमदग्नी",
+    "कौशिक",
+    "भृगु",
+    "वत्स",
+    "अल्म्बयान",
+    "कात्यायन",
+    "सुपर्णस्य",
+    "प्रतानोएशा",
+    "कृपाचार्य",
+    "विभांडिक",
+    "शिलांस",
+    "हरितस्य",
+    "मांडविया",
+    "नंदी",
+    "स्कंद",
+    "कृष्णात्रेय",
+    "कुंडल रुषी",
+    "कापी",
+    "मुद्गल",
+    "शांडिल्य",
+    "विश्वामित्र",
+    "मुनी भांगव",
+    "ऑगस्ट",
+    "गौतम",
+    "गर्या",
+    "पराशर",
+    "शकी",
+    "जैन",
+    "दुर्वास",
+    "प्रतावंश",
+    "सुपेनाची",
+    "भार्गव",
+    "वृषबाह",
+    "खोजिरवाले",
+    "सुदेशा",
+  ];
 
-  const handleOrnamentForm = (event) => {};
+  const handleOrnamentForm = (event) => {
+    event.preventDefault();
+    setLoading(true);
+    if (!pawti) {
+      return alert("Please retry");
+    }
+    if (!ornamentName) {
+      return alert("Please enter ornament name");
+    }
+    if (!ornamentValue) {
+      return alert("Please enter ornament value");
+    }
+    if (!ornamentWeight) {
+      return alert("Please enter ornament weight");
+    }
+    if (!name) {
+      return alert("Please enter your name");
+    }
+    if (!mobile) {
+      return alert("Please enter your mobile number");
+    }
+    if (!gotra) {
+      return alert("Please enter your gotra");
+    }
+
+    const postData = {
+      pawatiNumber: pawti,
+      receiptDate,
+      Name: name,
+      email,
+      mobileNumber: mobile,
+      address: { state },
+      gotra,
+      uid,
+      ornamentName,
+      ornamentType,
+      ornamentWeight,
+      ornamentValue,
+    };
+  };
   return (
     <div className="ornaments">
       <Box mb={2}>
@@ -128,7 +216,7 @@ const OrnamentForm = () => {
               id="date"
               placeholder={t("fullname")}
               type="text"
-              disabled={true}
+              disabled={false}
             />
             <BillingFormInput
               value={mobile}
@@ -137,16 +225,16 @@ const OrnamentForm = () => {
               id="date"
               placeholder={t("mobile")}
               type="text"
-              disabled={true}
+              disabled={false}
             />
             <BillingFormInput
-              value={name}
-              onChange={setName}
-              label={t("name")}
-              id="date"
-              placeholder={t("fullname")}
-              type="text"
-              disabled={true}
+              value={email}
+              onChange={setEmail}
+              label={t("email")}
+              id="email"
+              placeholder={t("email")}
+              type="email"
+              disabled={false}
             />
             <FormControl>
               <FormLabel sx={{ mb: 1, color: "black" }} htmlFor="state">
@@ -179,6 +267,99 @@ const OrnamentForm = () => {
                 ))}
               </Select>
             </FormControl>
+            <BillingFormInput
+              value={ornamentName}
+              onChange={setOrnamentName}
+              label="Ornament Name"
+              id="ornamentName"
+              placeholder="Ornament Name"
+              type="text"
+              disabled={false}
+            />
+            <BillingFormInput
+              value={ornamentType}
+              onChange={setOrnamentType}
+              label="Ornament Type"
+              id="ornamentType"
+              placeholder="Ornament Type"
+              type="text"
+              disabled={false}
+            />
+            <BillingFormInput
+              value={ornamentWeight}
+              onChange={setOrnamentWeight}
+              label="Ornament Weight"
+              id="ornamentWeight"
+              placeholder="Ornament Weight"
+              type="text"
+              disabled={false}
+            />
+            <BillingFormInput
+              value={ornamentValue}
+              onChange={setOrnamentValue}
+              label="Ornament Value"
+              id="ornamentValue"
+              placeholder="Ornament Value"
+              type="text"
+              disabled={false}
+            />
+            <FormControl>
+              <FormLabel sx={{ mb: 1, color: "black" }} htmlFor="gotra">
+                {t("gotra")}
+              </FormLabel>
+              <input
+                value={gotra}
+                onChange={(e) => setGotra(e.target.value)}
+                id={"gotra"}
+                placeholder={t("gotra-enter")}
+                type="text"
+                className="customInput"
+                list={"Gotras"}
+              />
+            </FormControl>
+            <datalist id="Gotras">
+              {gotraList.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </datalist>
+            <BillingFormInput
+              value={address}
+              onChange={setAddress}
+              label="Address"
+              id="address"
+              placeholder="
+              Enter your address"
+              type="text"
+              disabled={false}
+            />
+            {ornamentValue > 2000 ? (
+              <>
+                <BillingFormInput
+                  value={uid}
+                  onChange={setUid}
+                  label={t("id-number")}
+                  id="pan"
+                  placeholder="PAN Number"
+                  type="text"
+                  disabled={false}
+                  required={true}
+                />
+              </>
+            ) : null}
+          </Box>
+          <Box sx={{ mt: 1 }}>
+            <Button
+              variant="contained"
+              sx={{ mr: 2, textTransform: "capitalize" }}
+              type="submit"
+              color="eighth"
+              disableElevation
+            >
+              {" "}
+              {t("generate-receipt")}{" "}
+            </Button>
           </Box>
         </Box>
       </Box>

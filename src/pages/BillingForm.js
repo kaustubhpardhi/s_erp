@@ -23,7 +23,6 @@ import { useTranslation } from "react-i18next";
 import "./BillingForm.css";
 
 function decrypt(text, skey) {
-  console.log({ text, skey });
   const base64Iv = "0123456789abcdef";
   const key = CryptoJS.enc.Base64.parse(skey);
   const iv = CryptoJS.enc.Utf8.parse(base64Iv);
@@ -32,9 +31,7 @@ function decrypt(text, skey) {
     mode: CryptoJS.mode.CBC,
     padding: CryptoJS.pad.Pkcs7,
   });
-  console.log("I am in decrypt function:", decrypted);
   const decryptedData = decrypted.toString(CryptoJS.enc.Utf8);
-  console.log({ decryptedData });
   return decryptedData;
 }
 
@@ -77,7 +74,6 @@ const BillingForm = () => {
   const [uidType, setUidType] = useState("");
   const [address, setAddress] = useState("");
   const { t } = useTranslation();
-
   const generateThanks = () => {
     navigate("/thanks-letter", {
       state: {
@@ -184,7 +180,7 @@ const BillingForm = () => {
       // uidType,
       aadhar,
     };
-
+    console.log(postData);
     if (payment === "offline" && method === "cash") {
       postData.modeOfPayment = {
         Cash: Number(amount),
@@ -215,7 +211,6 @@ const BillingForm = () => {
     divideName.shift();
     const lName = divideName.join(" ");
     const expiryDate = moment(moment().add(1, "days")._d).format("YYYY-MM-DD");
-    console.log(expiryDate);
     const createOrderData = {
       fName,
       lName,
@@ -232,26 +227,22 @@ const BillingForm = () => {
       purpose: forWhich,
       pawti: pawti,
     };
-    console.log(createOrderData);
     if (payment === "online") {
       if (forWhich === "अन्नछत्र") {
         axios
           .post("/receipt/create-order", createOrderData)
           .then((res) => {
             const secrete = res.data.message;
-            console.log("res within create-order", res);
             if (secrete) {
               // setReceipt({ pawti, name, date, mobile, email, forWhich, amount, state, day, city, payment, method, bank, branch, cheque, chequeDate, month, dateNumber, gotra })
               const decryptData = decrypt(
                 secrete,
                 "vRu9Pnhkuu9l93waNd79uIYltDVDozmZ4/CrAf67Ud8="
               );
-              console.log("decrypt data within create-order", decryptData);
               if (decryptData === "Invalid Mobile number !!") {
                 return alert("Invalid Mobile number !!");
               } else if (decryptData) {
                 axios.post("/receipt/create-receipt", postData).then((res) => {
-                  console.log("res within create-receipt", res);
                   navigate("/generate-receipt", {
                     state: {
                       pawti,
@@ -285,19 +276,16 @@ const BillingForm = () => {
           .post("/receipt/create-ordertwo", createOrderData)
           .then((res) => {
             const secrete = res.data.message;
-            console.log("res within create-order", res);
             if (secrete) {
               // setReceipt({ pawti, name, date, mobile, email, forWhich, amount, state, day, city, payment, method, bank, branch, cheque, chequeDate, month, dateNumber, gotra })
               const decryptData = decrypt(
                 secrete,
                 "2Q+5FpQVfZaM+b5XSuvpB8hW3dGAQkNhLSYNMgW1zAQ= "
               );
-              console.log("decrypt data within create-order", decryptData);
               if (decryptData === "Invalid Mobile number !!") {
                 return alert("Invalid Mobile number !!");
               } else if (decryptData) {
                 axios.post("/receipt/create-receipt", postData).then((res) => {
-                  console.log("res within create-receipt", res);
                   navigate("/generate-receipt", {
                     state: {
                       pawti,
@@ -441,8 +429,6 @@ const BillingForm = () => {
     "खोजिरवाले",
     "सुदेशा",
   ];
-
-  console.log(uidType);
 
   if (loading) {
     return (
