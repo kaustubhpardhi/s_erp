@@ -48,7 +48,7 @@ const OrnamentForm = () => {
 
   //checking the last pawti number
   useEffect(() => {
-    axios.get("/receipt/check-pawati-number", {}).then((res) => {
+    axios.get("/ornament/check-ornament-pawati", {}).then((res) => {
       if (res.data) {
         const pawatiNumber = res.data[0]?.pawatiNumber || 0;
         setPawti(pawatiNumber + 1);
@@ -170,6 +170,8 @@ const OrnamentForm = () => {
       ornamentWeight,
       ornamentValue,
     };
+
+    axios.post("/ornament/create-receipt", postData).then((res) => {});
   };
   return (
     <div className="ornaments">

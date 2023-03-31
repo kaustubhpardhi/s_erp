@@ -109,7 +109,7 @@ const BillingForm = () => {
   }, []);
   // last pawti
   useEffect(() => {
-    axios.get("/receipt/check-pawati-number", {}).then((res) => {
+    axios.get("/receipt/check-pawati-number ", {}).then((res) => {
       if (res.data) {
         const pawatiNumber = res.data[0]?.pawatiNumber || 0;
         setPawti(pawatiNumber + 1);
