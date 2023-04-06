@@ -18,6 +18,7 @@ import BillingFormInput from "../Components/BillingFormInput";
 import DatePicker from "react-datepicker";
 import country_state_district from "country_state_district";
 import { useTranslation } from "react-i18next";
+import "./OrnamentForm.css";
 
 const OrnamentForm = () => {
   const stateList = country_state_district.getAllStates();
@@ -149,8 +150,8 @@ const OrnamentForm = () => {
     if (!name) {
       return alert("Please enter your name");
     }
-    if (!mobile) {
-      return alert("Please enter your mobile number");
+    if (!/^(\+\d{1,3}[- ]?)?\d{10}$/i.test(mobile)) {
+      return alert("Please Provide a valid mobile number");
     }
     if (!gotra) {
       return alert("Please enter your gotra");
@@ -171,18 +172,54 @@ const OrnamentForm = () => {
       ornamentValue,
     };
 
-    axios.post("/ornament/create-receipt", postData).then((res) => {});
+    axios.post("/ornament/create-ornament-receipt", postData).then((res) => {
+      navigate("/generate-ornament", {
+        state: {
+          pawti,
+          name,
+          receiptDate,
+          mobile,
+          email,
+          ornamentName,
+          ornamentValue,
+          ornamentType,
+          ornamentWeight,
+          uid,
+        },
+      });
+    });
   };
+
+  if (loading) {
+    return (
+      <div className="screenCenter">
+        <CircularProgress />
+        <br></br>
+        <h2>कृपया थांबा</h2>
+      </div>
+    );
+  }
   return (
     <div className="ornaments">
-      <Box mb={2}>
-        <Typography
-          variant="h1"
-          sx={{ fontSize: "30px", fontWeight: "700", mt: "15px" }}
-          gutterBottom
-        >
-          Generate Ornament Receipt
-        </Typography>
+      <Box mb={2} mt={4}>
+        <div className="ornament-title">
+          <Typography
+            variant="h1"
+            sx={{ fontSize: "30px", fontWeight: "700", mt: "15px" }}
+            gutterBottom
+          >
+            Generate Ornament Receipt
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{ mr: 2, textTransform: "capitalize" }}
+            color="eighth"
+            disableElevation
+          >
+            Ornament Management
+          </Button>
+        </div>
+
         <Box
           component="form"
           onSubmit={handleOrnamentForm}

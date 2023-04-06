@@ -20,6 +20,7 @@ import GenerateThanks from "./pages/GenerateThanks";
 import Footer from "./pages/Footer";
 import Dashboard from "./pages/Dashboard";
 import OrnamentForm from "./pages/OrnamentForm";
+import GenerateOrnament from "./pages/GenerateOrnament";
 const drawerWidth = 280;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -72,6 +73,14 @@ function App() {
                     <RequireAuth>
                       {" "}
                       <GenerateReceipt />{" "}
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/generate-ornament"
+                  element={
+                    <RequireAuth>
+                      <GenerateOrnament />{" "}
                     </RequireAuth>
                   }
                 />
